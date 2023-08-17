@@ -23,7 +23,7 @@ be used, or a user-defined function or class can be provided.
 
 ### Example code
 
-`
+```python
 import numpy as np
 import matplotlib.pyplot as plt
 import fftsynchro
@@ -59,4 +59,4 @@ plt.legend(title='Pitch angle [rad]')
 
 plt.show()
 
-`
+```
