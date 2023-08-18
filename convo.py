@@ -41,7 +41,7 @@ def j_nu(nu,dn_dg,B,pitch,m=me,q=e,gmin=1.,gmax=1e8,res=0.1):
     # define arrays over which the convenience functions are
     # evaluated
     y = np.arange(2.*np.log(gmin),2.*np.log(gmax),res)
-    x = np.arange(-18,15,res) # FIXME: hardcoded limits
+    x = np.arange(-25,15,res) # FIXME: hardcoded limits
     
     # this encodes the particle distribution, which represents the
     # signal in the convolution
