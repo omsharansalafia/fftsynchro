@@ -28,34 +28,28 @@ import numpy as np
 import matplotlib.pyplot as plt
 import fftsynchro
 
-# magnetic field and pitch angle
-B = 1.
-pitches = np.linspace(0.01,np.pi/2.,6)
+# Magnetic field
+B = 1. #Gauss
 
-# particle distribution
-n = 1.
-gm = 1e4
-p = 2.2
+# Particle distribution
+n = 1.  #cm-3
+gm = 1e4  #Minimum Lorentz factor
+p = 2.2  #Power law index
 
-dndg = fftsynchro.particle_distributions.powerlaw(n,gm,p)
+dndg = fftsynchro.particle_distributions.powerlaw(n,gm,p)  #Class that holds the particle dist
 
 # compute emissivity
 nu = np.logspace(8,24,100)
-jnu = np.zeros([len(pitches),len(nu)])
-for i,pitch in enumerate(pitches):
-    jnu[i] = fftsynchro.j_nu(nu,dndg,B,pitch)
+jnu = fftsynchro.j_nu(nu,dndg,B,pitch='iso')  #compute emissivity assuming an isotropic pitch angle distribution
 
 # plot it
-for i,pitch in enumerate(pitches):
-    plt.loglog(nu,jnu[i]/jnu.max(),label='{0:.2f}'.format(pitch))
+plt.loglog(nu,jnu/jnu.max())
 
 plt.xlabel(r'$\nu$ [Hz]')
 plt.ylabel(r'$j_\nu/j_{\nu,\mathrm{max}}$')
 
 plt.xlim([1e8,1e24])
 plt.ylim([1e-10,3])
-
-plt.legend(title='Pitch angle [rad]')
 
 plt.show()
 
