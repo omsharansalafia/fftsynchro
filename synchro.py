@@ -62,3 +62,33 @@ def P_nu(nu,g,B,pitch,m=me,q=e):
     K = normalization_Pnu(B,pitch,m,q)
     
     return K*F
+
+def P_nu_isopitch(nu,g,B,m=me,q=e):
+    """
+    Average power spectral density per particle, dP/dnu, emitted at frequency
+    nu by an isotropic pitch angle population of particles.
+    
+    Parameters:
+    - nu: frequency in Hz
+    - g: Lorentz factor
+    - B: magnetic field in Gauss
+    
+    Keyword arguments:
+    - m: particle mass
+    - q: particle charge
+    
+    """
+    # cyclotron frequency
+    nuB = g**2*nu_cyc(B,m,q)
+    
+    # use analytical approx to avg single-particle
+    # spectrum from Ghisellini et al. '88
+    x = nu/nuB
+    K43 = kv(4./3.,x)
+    K13 = kv(1./3.,x)
+    F = x**2*(K43*K13-0.6*x*(K43**2-K13**2))
+    
+    # normalization
+    K = 2.*normalization_Pnu(B,np.pi/2.,m,q)
+    
+    return K*F
