@@ -1,6 +1,27 @@
 import numpy as np
-from scipy.special import gamma,gammaincc
+from scipy.special import gamma,gammaincc,kv
 
+class superposition:
+    
+    def __init__(s,distrib_list):
+        """
+        Class for sum of two or more distributions.
+        
+        Init parameters:
+        - distrib_list: list of instances of particle distribution classes.
+        
+        Methods:
+        __call
+        """
+
+        s.distrib_list = distrib_list
+        s.gmax = np.max([d.gmax for d in distrib_list])
+            
+    def __call__(s,g):
+        return np.sum([d(g) for d in s.distrib_list],axis=0)
+    
+    def gmin(self):
+        return np.min([[d.gmin() for d in self.distrib_list]])
 
 class powerlaw:
     
@@ -18,6 +39,7 @@ class powerlaw:
         
         Methods:
         __call__(): return density within (g,g+dg)
+        gmin(): minimum Lorentz factor
         """
         
         s.n = n
@@ -52,6 +74,7 @@ class cooled_powerlaw:
         
         Methods:
         __call__(): return density within (g,g+dg)
+        gmin(): minimum Lorentz factor
         """
         
         s.n = n
@@ -85,6 +108,7 @@ class relativistic_maxwellian:
                 
         Methods:
         __call__(): return density within (g,g+dg)
+        gmin(): minimum Lorentz factor
         """
         
         s.n = n
@@ -93,12 +117,13 @@ class relativistic_maxwellian:
             s.gmax = 1e4*TH
         else:
             s.gmax = gmax
+        
+        s.norm = 2.*TH**2/kv(2.,1./TH)
 
     def gmin(self):
         return np.maximum(1.,self.TH/1e4)
     
     def __call__(s,g):
-        dndg = 0.5*s.n*g**2*np.exp(-g/s.TH)/(gamma(2)*gammaincc(2,s.TH**-1)*s.TH**3)*(g<s.gmax)
+        dndg = s.n*s.norm*np.sqrt(1.-g**-2)*g**2*np.exp(-g/s.TH)/(2*s.TH**3)*(g<s.gmax)
         
         return dndg
-    
