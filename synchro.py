@@ -5,7 +5,7 @@ from scipy.integrate import cumtrapz
 from .constants import *
 
 # pre-compute the single-particle spectrum
-x0 = np.logspace(-10,3,10000) # this is nu/nu_c, FIXME: the resolution and grid extent are hardcoded
+x0 = np.logspace(-10,3,3000) # this is nu/nu_c, FIXME: the resolution and grid extent are hardcoded
 
 # compute the cumulative integral of the K_5/3 modified Bessel function of
 # the second kind, represented by kv(5./3.,x) in scipy, using the trapezoidal
@@ -19,6 +19,11 @@ F0 = x0*G0
 # asymptotic form
 F0[x0>10.]=(np.pi/2.)**0.5*(x0[x0>10.])**0.5*np.exp(-x0[x0>10.])
 
+# pre-compute isotropic-pitch-angle-averaged quantity for alpha_nu computation
+th = np.linspace(0.0001,np.pi/2,200)
+thm,xm = np.meshgrid(th,x0)
+Q = kv(5./3.,xm/np.sin(thm))*xm**2/np.sin(thm)
+Qav = np.trapz(Q,th,axis=1)
 
 def nu_cyc(B,m=me,q=e):
     """
