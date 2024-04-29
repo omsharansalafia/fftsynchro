@@ -15,7 +15,8 @@ def gxy(x):
 
 def gxy_iso(x):
     """
-    Convenience function for j_nu convolution, isotropic pitch angle case
+    Convenience function for j_nu convolution, isotropic pitch angle case,
+    from Ghisellini & Svensson 1988
     """
     y = np.exp(x)
     K43 = kv(4./3.,y)
