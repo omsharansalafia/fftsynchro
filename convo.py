@@ -18,7 +18,7 @@ def gxy_iso(x):
     Convenience function for j_nu convolution, isotropic pitch angle case,
     from Ghisellini & Svensson 1988
     """
-    y = np.exp(x)
+    y = np.exp(x)/3.
     K43 = kv(4./3.,y)
     K13 = kv(1./3.,y)
 
@@ -89,8 +89,8 @@ def j_nu(nu,dn_dg,B,pitch='iso',m=me,q=e,gmin=1.,gmax=1e8,res=0.1,mode='fft'):
         
         # reconstruct the frequency range
         if pitch=='iso':
-            numin = gmin**2*2.*q*B/(2*np.pi*m*c)*np.exp(x[0]) 
-            numax = gmax**2*4.*q*B/(2*np.pi*m*c)*np.exp(x[-1])
+            numin = gmin**2*q*B/(2*np.pi*m*c)*np.exp(x[0]) 
+            numax = gmax**2*q*B/(2*np.pi*m*c)*np.exp(x[-1])
         else:
             sinpitch = 1.5*np.sin(pitch)
             numin = gmin**2*sinpitch*q*B/(2*np.pi*m*c)*np.exp(x[0]) 
