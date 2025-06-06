@@ -54,10 +54,10 @@ def P_nu(nu,g,B,pitch,m=me,q=e):
     
     """
     # cyclotron frequency
-    nucyc = nu_cyc(B,m,q)
+    nuB = nu_cyc(B,m,q)
     
     # synchrotron characteristic frequency
-    nuc = 1.5*g**2*nucyc*np.sin(pitch)
+    nuc = 1.5*g**2*nuB*np.sin(pitch)
     
     # interpolate over pre-computed single-particle spectrum
     x = nu/nuc
@@ -88,7 +88,7 @@ def P_nu_isopitch(nu,g,B,m=me,q=e):
     
     # use analytical approx to avg single-particle
     # spectrum from Ghisellini et al. '88
-    x = nu/nuB
+    x = nu/(3*nuB)
     K43 = kv(4./3.,x)
     K13 = kv(1./3.,x)
     F = x**2*(K43*K13-0.6*x*(K43**2-K13**2))
